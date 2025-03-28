@@ -110,13 +110,13 @@ function evaluateFollowUp() {
   if (level === 0) {
     final.innerText = "非常好！祝贺您已成功释放这件事情带来的负面情绪！";
   } else {
-    final.innerText = `请复述：“虽然我想起这件事还是很${detectedEmotion}，但是我还是完完全全接受并爱自己。”
-现在请再跟我再来进行一次完整的弹穴疗愈动作！`;
+    final.innerText = `请复述：“虽然我想起这件事还是很${detectedEmotion}，但是我还是完完全全接受并爱自己。”\n现在请再跟我再来进行一次完整的弹穴疗愈动作！`;
   }
 }
 
 // Function to use speech synthesis
 function speak(text) {
+  // Replace "弹" with "谭" to avoid TTS issues if needed
   const utter = new SpeechSynthesisUtterance(text.replace(/弹/g, "谭"));
   utter.lang = 'zh-CN';
   speechSynthesis.speak(utter);
@@ -127,3 +127,18 @@ toggleMusicBtn.addEventListener('click', function() {
   const music = document.getElementById('bgMusic');
   music.muted = !music.muted;
 });
+
+/* ========== NEW MODAL FUNCTIONS ========== */
+// Open the modal with the detailed 百会穴 image
+function openModal(imgSrc) {
+  const modal = document.getElementById("myModal");
+  const modalImg = document.getElementById("modal-img");
+  modal.style.display = "block";
+  modalImg.src = imgSrc;
+}
+
+// Close the modal
+function closeModal() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "none";
+}
