@@ -1,50 +1,64 @@
-// public/script.js
+// script.js
 
-// Global variables and element references
-const acupoints = ["后溪穴", "内关穴", "攒竹穴", "童子髎", "承泣穴", "人中穴", "承浆穴", "神藏穴", "大包穴", "百会穴"];
+// Global variables
 let currentStep = 0;
 let detectedEmotion = "";
+const acupoints = ["后溪穴", "内关穴", "攒竹穴", "童子髎", "承泣穴", "人中穴", "承浆穴", "神藏穴", "大包穴", "百会穴"];
 
-// Ensure these elements are available after the DOM loads.
-const bgMusic = document.getElementById("bgMusic");
-const toggleMusicBtn = document.getElementById("toggleMusicBtn");
-
-// Set background music volume (if bgMusic is found)
-if (bgMusic) {
-  bgMusic.volume = 0.4;
-}
-
-// Function to call your backend endpoint to detect emotion
+/**
+ * Calls the backend endpoint to detect emotion.
+ * Replace this with your actual API call as needed.
+ */
 async function detectEmotionAI(text) {
   const prompt = `请用两个字精准总结以下描述的主要负面情绪：“${text}”，只返回两个字，不要有标点符号或引号。`;
-
-  const response = await fetch('/api/chat', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ prompt: prompt })
-  });
-
-  const data = await response.json();
-  // Assuming the backend returns a similar structure as the DeepSeek API.
-  return data.choices[0].message.content.trim().replace(/['"“”]/g, '').substring(0, 2);
+  try {
+    const response = await fetch('/api/chat', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await response.json();
+    // Assuming the response structure is similar to DeepSeek's:
+    return data.choices[0].message.content.trim().replace(/['"“”]/g, '').substring(0, 2);
+  } catch (error) {
+    console.error("Error in detectEmotionAI:", error);
+    return "未知"; // fallback emotion if error
+  }
 }
 
-// Start the therapy process: detect emotion then display the first step.
+/**
+ * Called when the "描述问题" button is clicked.
+ * Displays a progress bar in the step1 div and shows the spinner beside the button.
+ */
 async function startStep1() {
-  if (bgMusic) bgMusic.play(); // Trigger music on user interaction
+  const step1Div = document.getElementById("step1");
+  const spinner = document.getElementById("spinner");
+  // Show spinner
+  spinner.style.display = "inline-block";
+
+  // Display the progress bar in the step1 div
+  step1Div.innerHTML = '<div class="progress-bar"><div class="progress"></div></div>';
 
   const input = document.getElementById("userInput").value;
-  detectedEmotion = await detectEmotionAI(input);
-
-  document.getElementById("step1").innerText = `我明白了，你现在感到${detectedEmotion}。请跟我一起进行弹穴疗愈。`;
-  document.getElementById("intensityDiv").style.display = "block";
-
-  speak(`我明白了，你现在感到了${detectedEmotion}。请跟我一起进行弹穴疗愈。请问你对这件事情的情绪强度是0到10第几级？`);
+  try {
+    detectedEmotion = await detectEmotionAI(input);
+    // Once API returns, update the step1 content:
+    step1Div.innerHTML = `我明白了，你现在感到${detectedEmotion}。请跟我一起进行弹穴疗愈。`;
+    speak(`我明白了，你现在感到了${detectedEmotion}。请跟我一起进行弹穴疗愈。请问你对这件事情的情绪强度是0到10第几级？`);
+  } catch (error) {
+    console.error("Error in startStep1:", error);
+    step1Div.innerHTML = "出错了，请稍后重试。";
+  } finally {
+    // Hide spinner after the API call completes (whether success or failure)
+    spinner.style.display = "none";
+  }
 }
 
-// Evaluate initial emotional intensity and show next steps
+/**
+ * Evaluates the initial emotional intensity.
+ */
 function evaluateIntensity() {
   const level = parseInt(document.getElementById("intensityInput").value);
   if (level === 0) {
@@ -58,7 +72,9 @@ function evaluateIntensity() {
   }
 }
 
-// Advance to the next acupoint with countdown logic
+/**
+ * Proceeds to the next acupoint step with a countdown.
+ */
 function nextAcupoint() {
   if (currentStep < acupoints.length) {
     const point = acupoints[currentStep];
@@ -90,7 +106,9 @@ function nextAcupoint() {
   }
 }
 
-// Evaluate follow-up emotional intensity and display final instructions
+/**
+ * Evaluates the follow-up emotional intensity.
+ */
 function evaluateFollowUp() {
   const level = parseInt(document.getElementById("followupIntensity").value);
   const final = document.getElementById("finalResponse");
@@ -102,7 +120,9 @@ function evaluateFollowUp() {
   }
 }
 
-// Function to use speech synthesis
+/**
+ * Uses the Web Speech API to speak the provided text.
+ */
 function speak(text) {
   const utter = new SpeechSynthesisUtterance(text.replace(/弹/g, "谭"));
   utter.lang = 'zh-CN';
@@ -110,7 +130,7 @@ function speak(text) {
 }
 
 // Toggle background music mute/unmute
-toggleMusicBtn.addEventListener('click', function() {
-  const music = document.getElementById('bgMusic');
+document.getElementById("toggleMusicBtn").addEventListener("click", function() {
+  const music = document.getElementById("bgMusic");
   music.muted = !music.muted;
 });
