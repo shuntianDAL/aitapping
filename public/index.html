@@ -9,15 +9,16 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Left rectangular logo positioned at top left -->
+  <img src="/source/logo.png" alt="Logo" class="left-rect-logo">
 
-<!-- Header with two logos on the sides and title in the middle -->
-<div class="header">
-  <img src="/source/logo.png" alt="Logo" class="logo-img left-logo">
-  <h1>弹穴疗愈AI助手</h1>
-  <img src="/source/tian.png" alt="天图" class="logo-img right-logo">
-</div>
+  <!-- Header with title and right logo -->
+  <div class="header">
+    <h1>弹穴疗愈AI助手</h1>
+    <img src="/source/tian.png" alt="天图" class="logo-img right-logo">
+  </div>
 
-
+  <!-- The rest of your content -->
   <textarea id="userInput" placeholder="请输入你的负面情绪或困扰..."></textarea>
 
   <!-- Button container with spinner next to the "描述问题" button -->
@@ -59,13 +60,11 @@
   </div>
 
   <!-- New Acupoint Modal for showing step-specific images with countdown -->
-<!-- New Acupoint Modal for showing step-specific images with countdown -->
-<div id="acupointModal" class="modal">
-  <div id="acupointGuidance" class="guidance"></div>
-  <img class="modal-content" id="acupointImg" alt="穴位详情">
-  <div id="acupointCountdown" class="countdown"></div>
-</div>
-
+  <div id="acupointModal" class="modal">
+    <div id="acupointGuidance" class="guidance"></div>
+    <img class="modal-content" id="acupointImg" alt="穴位详情">
+    <div id="acupointCountdown" class="countdown"></div>
+  </div>
 
   <audio id="bgMusic" src="/source/bird.mp3" autoplay loop></audio>
   <div class="audio-controls">
