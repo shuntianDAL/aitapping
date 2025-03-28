@@ -1,17 +1,17 @@
 // server.js
-require('dotenv').config(); // Loads variables from .env
+require('dotenv').config();
 const express = require('express');
 const fetch = require('node-fetch');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.API_KEY; // Your secret key stored in .env or Render environment
+const API_KEY = process.env.API_KEY;
 
-// Middleware to parse JSON bodies
+// Parse JSON bodies
 app.use(express.json());
 
-// API endpoint that calls the DeepSeek AI API with your secret API key
+// API endpoint to call the AI API
 app.post('/api/chat', async (req, res) => {
   try {
     const { prompt } = req.body;
@@ -35,8 +35,11 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-// Serve static files from the "public" folder (index.html, script.js, images, etc.)
+// Serve the public folder as normal
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve the images from the "source" folder under the /images URL prefix
+app.use('/source', express.static(path.join(__dirname, 'source')));
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
