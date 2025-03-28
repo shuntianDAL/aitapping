@@ -11,31 +11,32 @@ body {
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;  /* Space out items to the left and right */
+  justify-content: space-between;  /* Left and right logos at the sides */
   margin-bottom: 1em;
 }
 
 /* Logo images (tian.png and logo.png) */
 .logo-img {
-  width: 100px;
-  height: 100px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-/* Optionally adjust spacing for left and right logos if needed */
-.left-logo {
-  /* Additional styles for left logo if required */
-}
-
+/* Right logo remains 100px x 100px */
 .right-logo {
-  /* Additional styles for right logo if required */
+  width: 100px;
+  height: 100px;
 }
 
+/* Left logo 50% smaller (50px x 50px) */
+.left-logo {
+  width: 50px;
+  height: 50px;
+}
 
+/* Smaller header title */
 h1 {
   font-family: 'KaiTi', '楷体', serif;
-  font-size: 1.8em;
+  font-size: 1.2em; /* Smaller than previous 1.8em */
   margin: 0;
 }
 
