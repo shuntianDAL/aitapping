@@ -11,17 +11,27 @@ body {
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;  /* Space out items to the left and right */
   margin-bottom: 1em;
 }
 
-/* Logo image (tian.png) */
+/* Logo images (tian.png and logo.png) */
 .logo-img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 0.75em;
 }
+
+/* Optionally adjust spacing for left and right logos if needed */
+.left-logo {
+  /* Additional styles for left logo if required */
+}
+
+.right-logo {
+  /* Additional styles for right logo if required */
+}
+
 
 h1 {
   font-family: 'KaiTi', '楷体', serif;
