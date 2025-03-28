@@ -12,13 +12,16 @@
       background-color: #fff7ed;
       margin: 0;
       box-sizing: border-box;
+      /* Desktop default: left-align */
+      text-align: left;
     }
+
     /* Container for the title + logo */
     .header {
       position: relative; /* allows absolute positioning of the logo inside */
       margin-bottom: 1em;
-      text-align: center; /* centers the <h1> text */
     }
+
     /* Absolutely positioned logo in top-left corner */
     .logo-img {
       position: absolute;
@@ -28,15 +31,16 @@
       height: 50px;
       border-radius: 50%;
       object-fit: cover;
-      /* If you want some space from the edges, add margin: 0.5em; or similar. */
-      margin: 0.5em;
+      margin: 0.5em; /* space from the edges */
     }
+
     h1 {
       font-family: 'KaiTi', '楷体', serif;
       font-size: 1.8em;
       margin: 0;
-      padding: 0.5em 0 0 0; /* top padding so the text doesn't overlap the image */
+      padding: 0.5em 0 0 0; /* top padding so text doesn't overlap the image */
     }
+
     textarea {
       width: 100%;
       height: 100px;
@@ -87,14 +91,27 @@
       margin-top: 1em;
       flex-wrap: wrap;
     }
+
+    /*
+      MEDIA QUERY for mobile (max-width: 767px).
+      Center text & header only on small screens.
+    */
+    @media (max-width: 767px) {
+      body {
+        text-align: center;
+      }
+      .header {
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Header with absolute-positioned logo and centered title -->
+  <!-- Header with absolute-positioned logo and default left-aligned title -->
   <div class="header">
-    <!-- Make sure tian.jpg is placed in /source/ or adjust the path if needed -->
-    <img src="/source/tian.png" alt="天图" class="logo-img">
+    <!-- Ensure tian.jpg is in /source/ or adjust path as needed -->
+    <img src="/source/tian.jpg" alt="天图" class="logo-img">
     <h1>弹穴疗愈AI助手</h1>
   </div>
 
@@ -118,7 +135,8 @@
   </div>
   <div id="finalResponse" class="response"></div>
 
-  <div style="text-align: center; margin-top: 2em;">
+  <div style="margin-top: 2em;">
+    <!-- Desktop left-aligned by default; mobile center via media query -->
     <img src="/source/acupoints.jpg" alt="穴位图">
   </div>
 
