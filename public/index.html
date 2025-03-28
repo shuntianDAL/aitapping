@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>弹穴疗愈AI助手</title>
+  <style>
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      padding: 2em;
+      background-color: #fff7ed;
+    }
+    h1 {
+      font-family: 'KaiTi', '楷体', serif;
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 1em;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 1em;
+    }
+    input[type=number] {
+      width: 60px;
+    }
+    button {
+      padding: 0.5em 1em;
+      margin-top: 1em;
+      background-color: #f0cfa0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e6bd89;
+    }
+    .response {
+      background: #fff0dd;
+      padding: 1em;
+      white-space: pre-wrap;
+      margin-top: 1em;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>弹穴疗愈AI助手</h1>
+  <textarea id="userInput" placeholder="请输入你的负面情绪或困扰..."></textarea>
+  <button onclick="startStep1()">描述问题</button>
+
+  <div id="step1" class="response"></div>
+  <div id="intensityDiv" style="display:none">
+    <p>请问你对这件事情的情绪强度是0~10级？</p>
+    <input type="number" id="intensityInput" min="0" max="10">
+    <button onclick="evaluateIntensity()">提交分数</button>
+  </div>
+
+  <div id="acupointStep" class="response" style="display:none"></div>
+  <button id="nextAcupointBtn" onclick="nextAcupoint()" style="display:none">下一穴位</button>
+
+  <div id="followUpDiv" style="display:none">
+    <p>请问执行疗愈过后情绪强度是几级？</p>
+    <input type="number" id="followupIntensity" min="0" max="10">
+    <button onclick="evaluateFollowUp()">提交分数</button>
+  </div>
+  <div id="finalResponse" class="response"></div>
+
+  <div style="text-align: center; margin-top: 3em;">
+    <img src="acupoints.jpg" alt="穴位图" style="max-width: 100%; height: auto; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px;">
+  </div>
+
+  <audio id="bgMusic" src="bird.mp3" autoplay loop></audio>
+  <div style="display: flex; justify-content: space-between;">
+    <button id="toggleMusicBtn">🎵 开(关)背景音乐</button>
+    <audio id="voicePlayer"></audio>
+  </div>
+
+  <!-- Load client-side JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
