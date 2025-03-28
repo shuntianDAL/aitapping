@@ -66,41 +66,62 @@ function evaluateIntensity() {
   } else {
     currentStep = 0;
     document.getElementById("acupointStep").style.display = "block";
-    document.getElementById("nextAcupointBtn").style.display = "inline-block";
+    // Start the first acupoint step by opening the acupoint modal
     nextAcupoint();
   }
 }
 
-// Advance to the next acupoint with countdown logic
+// Modified nextAcupoint: open the acupoint modal for the current step
 function nextAcupoint() {
-  if (currentStep < acupoints.length) {
-    const point = acupoints[currentStep];
-    const guidance = `步骤 ${currentStep + 1}：请轻弹“${point}”20秒，同时口述：\n“虽然我想起这件事还是很${detectedEmotion}，但是我还是完完全全接受并爱自己。”`;
-    document.getElementById("acupointStep").innerText = guidance;
+  // Hide the "下一穴位" button if visible
+  document.getElementById("nextAcupointBtn").style.display = "none";
+  showAcupointModal();
+}
 
-    // Speak the guidance
-    speak(`请轻弹 ${point} 二十秒，并说：虽然我想起这件事还是很${detectedEmotion}，但我还是完完全全接受并爱自己。`);
+// Show the acupoint modal with image corresponding to currentStep and start countdown
+function showAcupointModal() {
+  const modal = document.getElementById("acupointModal");
+  const modalImg = document.getElementById("acupointImg");
+  // Construct image path: for currentStep=0, show "1.jpeg", currentStep=1 -> "2.jpeg", etc.
+  modalImg.src = `/source/${currentStep + 1}.jpeg`;
+  modal.style.display = "block";
+  startCountdown();
+}
 
-    // Countdown logic for 20 seconds
-    let counter = 20;
-    const countdown = setInterval(() => {
-      document.getElementById("acupointStep").innerText = guidance + `\n\n倒计时：${counter} 秒`;
-      counter--;
-      if (counter < 0) {
-        clearInterval(countdown);
-        currentStep++;
-        if (currentStep < acupoints.length) {
-          document.getElementById("nextAcupointBtn").style.display = "inline-block";
-        } else {
-          document.getElementById("acupointStep").innerText = "10个穴位已完成，请继续进行情绪评分。";
-          document.getElementById("nextAcupointBtn").style.display = "none";
-          document.getElementById("followUpDiv").style.display = "block";
-        }
-      } else {
-        document.getElementById("nextAcupointBtn").style.display = "none";
-      }
-    }, 1000);
-  }
+// Start the 20-second countdown and update the countdown display
+function startCountdown() {
+  let counter = 20;
+  const countdownEl = document.getElementById("acupointCountdown");
+  countdownEl.innerText = counter + " 秒";
+  const interval = setInterval(() => {
+    counter--;
+    if (counter < 0) {
+      clearInterval(interval);
+      fadeOutAcupointModal();
+    } else {
+      countdownEl.innerText = counter + " 秒";
+    }
+  }, 1000);
+}
+
+// Fade out the acupoint modal and then hide it
+function fadeOutAcupointModal() {
+  const modal = document.getElementById("acupointModal");
+  modal.classList.add("fade-out");
+  setTimeout(() => {
+    modal.style.display = "none";
+    modal.classList.remove("fade-out");
+    // Proceed to next acupoint step
+    currentStep++;
+    if (currentStep < acupoints.length) {
+      // Show "下一穴位" button if more steps remain
+      document.getElementById("nextAcupointBtn").style.display = "inline-block";
+    } else {
+      document.getElementById("nextAcupointBtn").style.display = "none";
+      document.getElementById("acupointStep").innerText = "10个穴位已完成，请继续进行情绪评分。";
+      document.getElementById("followUpDiv").style.display = "block";
+    }
+  }, 1000); // Adjust timeout to match the fade-out transition duration
 }
 
 // Evaluate follow-up emotional intensity and display final instructions
@@ -128,8 +149,8 @@ toggleMusicBtn.addEventListener('click', function() {
   music.muted = !music.muted;
 });
 
-/* ========== NEW MODAL FUNCTIONS ========== */
-// Open the modal with the detailed 百会穴 image
+/* ========== EXISTING MODAL FUNCTIONS FOR RED ICON ========== */
+// Open the modal with the detailed 百会穴 image (triggered by clicking the red icon)
 function openModal(imgSrc) {
   const modal = document.getElementById("myModal");
   const modalImg = document.getElementById("modal-img");
@@ -137,7 +158,7 @@ function openModal(imgSrc) {
   modalImg.src = imgSrc;
 }
 
-// Close the modal
+// Close the modal (for the red icon modal)
 function closeModal() {
   const modal = document.getElementById("myModal");
   modal.style.display = "none";

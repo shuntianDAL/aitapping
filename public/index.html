@@ -50,10 +50,16 @@
     </div>
   </div>
 
-  <!-- Modal for showing the second detailed picture -->
+  <!-- Modal for showing the second detailed picture when clicking the red icon -->
   <div id="myModal" class="modal" onclick="closeModal()">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modal-img" alt="详细穴位图">
+  </div>
+
+  <!-- New Acupoint Modal for showing step-specific images with countdown -->
+  <div id="acupointModal" class="modal">
+    <img class="modal-content" id="acupointImg" alt="穴位详情">
+    <div id="acupointCountdown" class="countdown"></div>
   </div>
 
   <audio id="bgMusic" src="/source/bird.mp3" autoplay loop></audio>
