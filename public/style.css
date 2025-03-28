@@ -138,11 +138,11 @@ img {
 .icon {
   position: absolute;
   cursor: pointer;
-  width: 30px;
-  height: 30px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   /* Adjust top/left so it appears where you want it on the image */
-  top: 8.5%;
+  top: 9%;
   left: 14%;
 }
 
