@@ -78,15 +78,28 @@ function nextAcupoint() {
   showAcupointModal();
 }
 
-// Show the acupoint modal with image corresponding to currentStep and start countdown
+// Show the acupoint modal with image corresponding to currentStep, guidance text, and start countdown
 function showAcupointModal() {
   const modal = document.getElementById("acupointModal");
   const modalImg = document.getElementById("acupointImg");
+  const guidanceEl = document.getElementById("acupointGuidance");
+
+  // Get the acupoint name for the current step and build guidance text.
+  const point = acupoints[currentStep];
+  const guidanceText = `步骤 ${currentStep + 1}：请轻弹“${point}”20秒，同时口述：\n“虽然我想起这件事还是很${detectedEmotion}，但是我还是完完全全接受并爱自己。”`;
+
+  // Update guidance element with the text.
+  guidanceEl.innerText = guidanceText;
+
+  // Speak the guidance
+  speak(`请轻弹 ${point} 二十秒，并说：虽然我想起这件事还是很${detectedEmotion}，但我还是完完全全接受并爱自己。`);
+
   // Construct image path: for currentStep=0, show "1.jpeg", currentStep=1 -> "2.jpeg", etc.
   modalImg.src = `/source/${currentStep + 1}.jpeg`;
   modal.style.display = "block";
   startCountdown();
 }
+
 
 // Start the 20-second countdown and update the countdown display
 function startCountdown() {
