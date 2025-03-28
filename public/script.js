@@ -5,7 +5,6 @@ const acupoints = ["后溪穴", "内关穴", "攒竹穴", "童子髎", "承泣�
 let currentStep = 0;
 let detectedEmotion = "";
 
-// Ensure these elements are available after the DOM loads.
 const bgMusic = document.getElementById("bgMusic");
 const toggleMusicBtn = document.getElementById("toggleMusicBtn");
 
@@ -17,31 +16,45 @@ if (bgMusic) {
 // Function to call your backend endpoint to detect emotion
 async function detectEmotionAI(text) {
   const prompt = `请用两个字精准总结以下描述的主要负面情绪：“${text}”，只返回两个字，不要有标点符号或引号。`;
-
-  const response = await fetch('/api/chat', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ prompt: prompt })
-  });
-
-  const data = await response.json();
-  // Assuming the backend returns a similar structure as the DeepSeek API.
-  return data.choices[0].message.content.trim().replace(/['"“”]/g, '').substring(0, 2);
+  try {
+    const response = await fetch('/api/chat', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await response.json();
+    // Assuming the backend returns a similar structure as the DeepSeek API.
+    return data.choices[0].message.content.trim().replace(/['"“”]/g, '').substring(0, 2);
+  } catch (error) {
+    console.error("Error in detectEmotionAI:", error);
+    return "未知";
+  }
 }
 
 // Start the therapy process: detect emotion then display the first step.
 async function startStep1() {
-  if (bgMusic) bgMusic.play(); // Trigger music on user interaction
+  // Ensure background music plays on user interaction
+  if (bgMusic) bgMusic.play();
+
+  // Show spinner beside the button
+  const spinner = document.getElementById("spinner");
+  spinner.style.display = "inline-block";
 
   const input = document.getElementById("userInput").value;
-  detectedEmotion = await detectEmotionAI(input);
-
-  document.getElementById("step1").innerText = `我明白了，你现在感到${detectedEmotion}。请跟我一起进行弹穴疗愈。`;
-  document.getElementById("intensityDiv").style.display = "block";
-
-  speak(`我明白了，你现在感到了${detectedEmotion}。请跟我一起进行弹穴疗愈。请问你对这件事情的情绪强度是0到10第几级？`);
+  try {
+    detectedEmotion = await detectEmotionAI(input);
+    document.getElementById("step1").innerText = `我明白了，你现在感到${detectedEmotion}。请跟我一起进行弹穴疗愈。`;
+    document.getElementById("intensityDiv").style.display = "block";
+    speak(`我明白了，你现在感到了${detectedEmotion}。请跟我一起进行弹穴疗愈。请问你对这件事情的情绪强度是0到10第几级？`);
+  } catch (error) {
+    console.error("Error in startStep1:", error);
+    document.getElementById("step1").innerText = "出错了，请稍后重试。";
+  } finally {
+    // Hide spinner once the API call is complete
+    spinner.style.display = "none";
+  }
 }
 
 // Evaluate initial emotional intensity and show next steps

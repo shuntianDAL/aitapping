@@ -41,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Serve the images from the "source" folder under the /images URL prefix
 app.use('/source', express.static(path.join(__dirname, 'source')));
 
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
