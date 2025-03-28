@@ -13,11 +13,29 @@
       margin: 0;
       box-sizing: border-box;
     }
+    /* Container for the title + logo */
+    .header {
+      position: relative; /* allows absolute positioning of the logo inside */
+      margin-bottom: 1em;
+      text-align: center; /* centers the <h1> text */
+    }
+    /* Absolutely positioned logo in top-left corner */
+    .logo-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      /* If you want some space from the edges, add margin: 0.5em; or similar. */
+      margin: 0.5em;
+    }
     h1 {
       font-family: 'KaiTi', '楷体', serif;
-      text-align: center;
       font-size: 1.8em;
-      margin: 1em 0;
+      margin: 0;
+      padding: 0.5em 0 0 0; /* top padding so the text doesn't overlap the image */
     }
     textarea {
       width: 100%;
@@ -72,7 +90,14 @@
   </style>
 </head>
 <body>
-  <h1>弹穴疗愈AI助手</h1>
+
+  <!-- Header with absolute-positioned logo and centered title -->
+  <div class="header">
+    <!-- Make sure tian.jpg is placed in /source/ or adjust the path if needed -->
+    <img src="/source/tian.jpg" alt="天图" class="logo-img">
+    <h1>弹穴疗愈AI助手</h1>
+  </div>
+
   <textarea id="userInput" placeholder="请输入你的负面情绪或困扰..."></textarea>
   <button onclick="startStep1()">描述问题</button>
 
