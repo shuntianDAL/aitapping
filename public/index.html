@@ -2,26 +2,35 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
+  <!-- Mobile-friendly meta tag -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>弹穴疗愈AI助手</title>
   <style>
     body {
       font-family: "Microsoft YaHei", sans-serif;
-      padding: 2em;
+      padding: 2%;
       background-color: #fff7ed;
+      margin: 0;
+      box-sizing: border-box;
     }
     h1 {
       font-family: 'KaiTi', '楷体', serif;
       text-align: center;
-      font-size: 2em;
-      margin-bottom: 1em;
+      font-size: 1.8em;
+      margin: 1em 0;
     }
     textarea {
       width: 100%;
       height: 100px;
       margin-bottom: 1em;
+      font-size: 1em;
+      padding: 0.5em;
+      box-sizing: border-box;
     }
     input[type=number] {
-      width: 60px;
+      width: 50px;
+      padding: 0.2em;
+      font-size: 1em;
     }
     button {
       padding: 0.5em 1em;
@@ -30,6 +39,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: 1em;
     }
     button:hover {
       background-color: #e6bd89;
@@ -41,6 +51,23 @@
       margin-top: 1em;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      font-size: 1em;
+    }
+    /* Ensure images scale on mobile */
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    /* Responsive container for buttons/audio */
+    .audio-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1em;
+      flex-wrap: wrap;
     }
   </style>
 </head>
@@ -66,17 +93,17 @@
   </div>
   <div id="finalResponse" class="response"></div>
 
-  <div style="text-align: center; margin-top: 3em;">
-    <img src="/source/acupoints.jpg" alt="穴位图" style="max-width: 100%; height: auto; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px;">
+  <div style="text-align: center; margin-top: 2em;">
+    <img src="/source/acupoints.jpg" alt="穴位图">
   </div>
 
-  <audio id="bgMusic" src="/source/bird.mp3" autoplay loop></audio>
-  <div style="display: flex; justify-content: space-between;">
+  <audio id="bgMusic" src="bird.mp3" autoplay loop></audio>
+  <div class="audio-controls">
     <button id="toggleMusicBtn">🎵 开(关)背景音乐</button>
     <audio id="voicePlayer"></audio>
   </div>
 
-  <!-- Load client-side JavaScript -->
+  <!-- Load external client-side script -->
   <script src="script.js"></script>
 </body>
 </html>
