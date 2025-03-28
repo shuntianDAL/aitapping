@@ -1,50 +1,59 @@
-// public/script.js
+// script.js
 
-// Global variables and element references
-const acupoints = ["后溪穴", "内关穴", "攒竹穴", "童子髎", "承泣穴", "人中穴", "承浆穴", "神藏穴", "大包穴", "百会穴"];
+// Global variables
 let currentStep = 0;
 let detectedEmotion = "";
+const acupoints = ["后溪穴", "内关穴", "攒竹穴", "童子髎", "承泣穴", "人中穴", "承浆穴", "神藏穴", "大包穴", "百会穴"];
 
-// Ensure these elements are available after the DOM loads.
-const bgMusic = document.getElementById("bgMusic");
-const toggleMusicBtn = document.getElementById("toggleMusicBtn");
-
-// Set background music volume (if bgMusic is found)
-if (bgMusic) {
-  bgMusic.volume = 0.4;
-}
-
-// Function to call your backend endpoint to detect emotion
+/**
+ * Simulated API call that detects emotion.
+ * Replace this simulation with your actual API call.
+ */
 async function detectEmotionAI(text) {
+  // Example: Call your backend endpoint (/api/chat)
   const prompt = `请用两个字精准总结以下描述的主要负面情绪：“${text}”，只返回两个字，不要有标点符号或引号。`;
-
   const response = await fetch('/api/chat', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ prompt: prompt })
+    body: JSON.stringify({ prompt })
   });
-
   const data = await response.json();
-  // Assuming the backend returns a similar structure as the DeepSeek API.
+  // Assuming the backend returns a structure similar to DeepSeek's API response.
   return data.choices[0].message.content.trim().replace(/['"“”]/g, '').substring(0, 2);
 }
 
-// Start the therapy process: detect emotion then display the first step.
+/**
+ * Called when the "描述问题" button is clicked.
+ * Displays a progress bar while waiting for the API response.
+ */
 async function startStep1() {
-  if (bgMusic) bgMusic.play(); // Trigger music on user interaction
+  const step1Div = document.getElementById("step1");
+  // Display the progress bar
+  step1Div.innerHTML = '<div class="progress-bar"><div class="progress"></div></div>';
 
+  // Get user input
   const input = document.getElementById("userInput").value;
-  detectedEmotion = await detectEmotionAI(input);
 
-  document.getElementById("step1").innerText = `我明白了，你现在感到${detectedEmotion}。请跟我一起进行弹穴疗愈。`;
-  document.getElementById("intensityDiv").style.display = "block";
+  try {
+    // Call the API (simulate delay as needed)
+    detectedEmotion = await detectEmotionAI(input);
 
-  speak(`我明白了，你现在感到了${detectedEmotion}。请跟我一起进行弹穴疗愈。请问你对这件事情的情绪强度是0到10第几级？`);
+    // Update the "step1" div with the result
+    step1Div.innerHTML = `我明白了，你现在感到${detectedEmotion}。请跟我一起进行弹穴疗愈。`;
+
+    // Use speech synthesis to speak the instruction
+    speak(`我明白了，你现在感到了${detectedEmotion}。请跟我一起进行弹穴疗愈。请问你对这件事情的情绪强度是0到10第几级？`);
+  } catch (error) {
+    console.error(error);
+    step1Div.innerHTML = "出错了，请稍后重试。";
+  }
 }
 
-// Evaluate initial emotional intensity and show next steps
+/**
+ * Evaluates the initial emotional intensity.
+ */
 function evaluateIntensity() {
   const level = parseInt(document.getElementById("intensityInput").value);
   if (level === 0) {
@@ -58,7 +67,9 @@ function evaluateIntensity() {
   }
 }
 
-// Advance to the next acupoint with countdown logic
+/**
+ * Moves to the next acupoint with a countdown.
+ */
 function nextAcupoint() {
   if (currentStep < acupoints.length) {
     const point = acupoints[currentStep];
@@ -68,7 +79,7 @@ function nextAcupoint() {
     // Speak the guidance
     speak(`请轻弹 ${point} 二十秒，并说：虽然我想起这件事还是很${detectedEmotion}，但我还是完完全全接受并爱自己。`);
 
-    // Countdown logic for 20 seconds
+    // Countdown logic
     let counter = 20;
     const countdown = setInterval(() => {
       document.getElementById("acupointStep").innerText = guidance + `\n\n倒计时：${counter} 秒`;
@@ -90,7 +101,9 @@ function nextAcupoint() {
   }
 }
 
-// Evaluate follow-up emotional intensity and display final instructions
+/**
+ * Evaluates the follow-up emotional intensity.
+ */
 function evaluateFollowUp() {
   const level = parseInt(document.getElementById("followupIntensity").value);
   const final = document.getElementById("finalResponse");
@@ -102,7 +115,9 @@ function evaluateFollowUp() {
   }
 }
 
-// Function to use speech synthesis
+/**
+ * Uses the Web Speech API to speak the provided text.
+ */
 function speak(text) {
   const utter = new SpeechSynthesisUtterance(text.replace(/弹/g, "谭"));
   utter.lang = 'zh-CN';
@@ -110,7 +125,7 @@ function speak(text) {
 }
 
 // Toggle background music mute/unmute
-toggleMusicBtn.addEventListener('click', function() {
-  const music = document.getElementById('bgMusic');
+document.getElementById("toggleMusicBtn").addEventListener("click", function() {
+  const music = document.getElementById("bgMusic");
   music.muted = !music.muted;
 });

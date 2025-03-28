@@ -20,13 +20,15 @@
       align-items: center;
       margin-bottom: 1em;
     }
-    /* Logo image (tian.jpg) 200% bigger: 100px x 100px */
+    /* Logo image now 100x100; shifted left by 10px so the head isn’t cut off */
     .logo-img {
       width: 100px;
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
       margin-right: 0.75em;
+      position: relative;
+      left: -10px;
     }
     h1 {
       font-family: 'KaiTi', '楷体', serif;
@@ -67,6 +69,24 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       font-size: 1em;
     }
+    /* Progress bar styling */
+    .progress-bar {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 1em;
+    }
+    .progress {
+      height: 10px;
+      background-color: #f0cfa0;
+      animation: progressAnimation 2s infinite;
+    }
+    @keyframes progressAnimation {
+      0% { width: 0%; }
+      50% { width: 80%; }
+      100% { width: 0%; }
+    }
     /* Ensure images scale on mobile */
     img {
       max-width: 100%;
@@ -98,7 +118,7 @@
 
   <!-- Header with flex layout: logo and title -->
   <div class="header">
-    <!-- tian.jpg is now 100x100; adjust the path if needed -->
+    <!-- tian.jpg is located in /source/ -->
     <img src="/source/tian.png" alt="天图" class="logo-img">
     <h1>弹穴疗愈AI助手</h1>
   </div>
@@ -106,7 +126,9 @@
   <textarea id="userInput" placeholder="请输入你的负面情绪或困扰..."></textarea>
   <button onclick="startStep1()">描述问题</button>
 
+  <!-- The "step1" div will display the progress bar while "thinking" -->
   <div id="step1" class="response"></div>
+
   <div id="intensityDiv" style="display:none">
     <p>请问你对这件事情的情绪强度是0~10级？</p>
     <input type="number" id="intensityInput" min="0" max="10">
