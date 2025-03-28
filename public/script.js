@@ -6,22 +6,26 @@ let detectedEmotion = "";
 const acupoints = ["后溪穴", "内关穴", "攒竹穴", "童子髎", "承泣穴", "人中穴", "承浆穴", "神藏穴", "大包穴", "百会穴"];
 
 /**
- * Simulated API call that detects emotion.
- * Replace this simulation with your actual API call.
+ * Calls the backend endpoint to detect emotion.
+ * Replace this with your actual API call as needed.
  */
 async function detectEmotionAI(text) {
-  // Example: Call your backend endpoint (/api/chat)
   const prompt = `请用两个字精准总结以下描述的主要负面情绪：“${text}”，只返回两个字，不要有标点符号或引号。`;
-  const response = await fetch('/api/chat', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ prompt })
-  });
-  const data = await response.json();
-  // Assuming the backend returns a structure similar to DeepSeek's API response.
-  return data.choices[0].message.content.trim().replace(/['"“”]/g, '').substring(0, 2);
+  try {
+    const response = await fetch('/api/chat', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await response.json();
+    // Assuming the response structure is similar to DeepSeek's:
+    return data.choices[0].message.content.trim().replace(/['"“”]/g, '').substring(0, 2);
+  } catch (error) {
+    console.error("Error in detectEmotionAI:", error);
+    return "未知"; // fallback emotion if error
+  }
 }
 
 /**
@@ -33,20 +37,14 @@ async function startStep1() {
   // Display the progress bar
   step1Div.innerHTML = '<div class="progress-bar"><div class="progress"></div></div>';
 
-  // Get user input
   const input = document.getElementById("userInput").value;
-
   try {
-    // Call the API (simulate delay as needed)
     detectedEmotion = await detectEmotionAI(input);
-
-    // Update the "step1" div with the result
+    // Once API returns, update the step1 content:
     step1Div.innerHTML = `我明白了，你现在感到${detectedEmotion}。请跟我一起进行弹穴疗愈。`;
-
-    // Use speech synthesis to speak the instruction
     speak(`我明白了，你现在感到了${detectedEmotion}。请跟我一起进行弹穴疗愈。请问你对这件事情的情绪强度是0到10第几级？`);
   } catch (error) {
-    console.error(error);
+    console.error("Error in startStep1:", error);
     step1Div.innerHTML = "出错了，请稍后重试。";
   }
 }
@@ -68,7 +66,7 @@ function evaluateIntensity() {
 }
 
 /**
- * Moves to the next acupoint with a countdown.
+ * Proceeds to the next acupoint step with a countdown.
  */
 function nextAcupoint() {
   if (currentStep < acupoints.length) {
@@ -79,7 +77,7 @@ function nextAcupoint() {
     // Speak the guidance
     speak(`请轻弹 ${point} 二十秒，并说：虽然我想起这件事还是很${detectedEmotion}，但我还是完完全全接受并爱自己。`);
 
-    // Countdown logic
+    // Countdown logic for 20 seconds
     let counter = 20;
     const countdown = setInterval(() => {
       document.getElementById("acupointStep").innerText = guidance + `\n\n倒计时：${counter} 秒`;
