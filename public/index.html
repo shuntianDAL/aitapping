@@ -12,7 +12,8 @@
   <!-- Left rectangular logo positioned at top left -->
   <img src="/source/logo.png" alt="Logo" class="left-rect-logo">
 
-  <!-- EN icon on top right corner -->
+
+    <!-- EN icon on top right corner -->
   <a href="https://www.sinoatlantic.com/tap2.html" target="_blank" class="en-link">
     <img src="/source/en.png" alt="EN Icon" class="en-icon">
   </a>
@@ -25,7 +26,57 @@
 
   <!-- The rest of your content -->
   <textarea id="userInput" placeholder="请输入你的负面情绪或困扰..."></textarea>
-  <!-- ... remaining content ... -->
+
+  <!-- Button container with spinner next to the "描述问题" button -->
+  <div class="button-container">
+    <button onclick="startStep1()">描述问题</button>
+    <div id="spinner" class="spinner"></div>
+  </div>
+
+  <div id="step1" class="response"></div>
+  <div id="intensityDiv" style="display:none">
+    <p>请问你对这件事情的情绪强度是0~10级？</p>
+    <input type="number" id="intensityInput" min="0" max="10">
+    <button onclick="evaluateIntensity()">提交分数</button>
+  </div>
+
+  <div id="acupointStep" class="response" style="display:none"></div>
+  <button id="nextAcupointBtn" onclick="nextAcupoint()" style="display:none">下一穴位</button>
+
+  <div id="followUpDiv" style="display:none">
+    <p>请问执行疗愈过后情绪强度是几级？</p>
+    <input type="number" id="followupIntensity" min="0" max="10">
+    <button onclick="evaluateFollowUp()">提交分数</button>
+  </div>
+  <div id="finalResponse" class="response"></div>
+
+  <!-- Main acupoints image with circular flashing icon -->
+  <div class="image-container">
+    <img src="/source/acupoints.jpg" alt="穴位图" class="main-image">
+    <!-- Icon overlay: circular, flashing, with approximate position near 百会穴 region -->
+    <div class="icon" onclick="openModal('/source/baihui.jpeg')">
+      <div class="flashing-box"></div>
+    </div>
+  </div>
+
+  <!-- Modal for showing the second detailed picture when clicking the red icon -->
+  <div id="myModal" class="modal" onclick="closeModal()">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modal-img" alt="详细穴位图">
+  </div>
+
+  <!-- New Acupoint Modal for showing step-specific images with countdown -->
+  <div id="acupointModal" class="modal">
+    <div id="acupointGuidance" class="guidance"></div>
+    <img class="modal-content" id="acupointImg" alt="穴位详情">
+    <div id="acupointCountdown" class="countdown"></div>
+  </div>
+
+  <audio id="bgMusic" src="/source/bird.mp3" autoplay loop></audio>
+  <div class="audio-controls">
+    <button id="toggleMusicBtn">🎵 开(关)背景音乐</button>
+    <audio id="voicePlayer"></audio>
+  </div>
 
   <!-- Load external client-side script -->
   <script src="script.js"></script>
