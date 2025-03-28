@@ -12,16 +12,27 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100px;   /* Increased from 50px to 100px */
-  height: auto;   /* maintain aspect ratio */
-  margin: 10px;   /* optional spacing from the edges */
+  width: 100px;   /* Adjust as desired */
+  height: auto;
+  margin: 10px;
+}
+
+/* EN icon link positioned at top right */
+.en-link {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.en-icon {
+  width: 40px;  /* Adjust size as needed */
+  height: auto;
 }
 
 /* Flex container for header */
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;  /* left: title; right: right logo */
+  justify-content: space-between;  /* title on left, right logo on right */
   margin-bottom: 1em;
   padding-top: 70px; /* leave space for left logo */
 }
@@ -35,6 +46,7 @@ body {
 .right-logo {
   width: 100px;
   height: 100px;
+  margin-left: 20px; /* extra space between title and right logo */
 }
 
 /* Smaller header title */
@@ -43,6 +55,7 @@ h1 {
   font-size: 1.2em; /* smaller than before */
   margin: 0;
 }
+
 
 textarea {
   width: 100%;
