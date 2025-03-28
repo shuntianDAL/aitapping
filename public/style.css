@@ -12,9 +12,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50px;   /* 50% smaller than 100px */
-  height: auto;  /* maintain aspect ratio */
-  margin: 10px;  /* optional spacing from the edges */
+  width: 100px;   /* Increased from 50px to 100px */
+  height: auto;   /* maintain aspect ratio */
+  margin: 10px;   /* optional spacing from the edges */
 }
 
 /* Flex container for header */
